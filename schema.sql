@@ -1,6 +1,3 @@
--- schema.sql
--- Run this once against your Postgres database before seeding.
-
 CREATE TABLE IF NOT EXISTS products (
     id          BIGSERIAL PRIMARY KEY,
     name        TEXT NOT NULL,
@@ -10,10 +7,15 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE INDEX IF NOT EXISTS idx_products_feed
+    ON products (created_at DESC, id DESC);
+
+CREATE INDEX IF NOT EXISTS idx_products_category_feed
+    ON products (category, created_at DESC, id DESC);
 -- ── Why these indexes ────────────────────────────────────────────────
 --
 -- 1. idx_products_feed: composite index on (created_at DESC, id DESC).
---    This is THE index that makes pagination fast. Our query pattern is:
+--    This is THE index that makes pagination fast. The query pattern is:
 --       WHERE (created_at, id) < (cursor_created_at, cursor_id)
 --       ORDER BY created_at DESC, id DESC
 --       LIMIT 20
@@ -32,8 +34,4 @@ CREATE TABLE IF NOT EXISTS products (
 -- We keep both because the global feed (no filter) and per-category
 -- browsing are two distinct, equally-common query shapes here.
 
-CREATE INDEX IF NOT EXISTS idx_products_feed
-    ON products (created_at DESC, id DESC);
 
-CREATE INDEX IF NOT EXISTS idx_products_category_feed
-    ON products (category, created_at DESC, id DESC);

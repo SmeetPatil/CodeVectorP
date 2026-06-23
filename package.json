@@ -1,5 +1,5 @@
 {
-  "name": "codevector-products-api",
+  "name": "codevectorp",
   "version": "1.0.0",
   "description": "Browse ~200k products with fast, stable cursor-based pagination",
   "main": "server.js",

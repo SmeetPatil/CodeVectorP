@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { color: #333; }
+    .controls { margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+    select, input, button { padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #eee; font-weight: 600; }
+    .pagination { margin-top: 20px; display: flex; gap: 10px; align-items: center; }
+    .pagination button { cursor: pointer; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; }
+    .pagination button:disabled { background: #ccc; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <h1>Products</h1>
+
+  <div class="controls">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Home &amp; Kitchen">Home &amp; Kitchen</option>
+      <option value="Books">Books</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Sports">Sports</option>
+      <option value="Toys">Toys</option>
+      <option value="Beauty">Beauty</option>
+      <option value="Automotive">Automotive</option>
+      <option value="Garden">Garden</option>
+      <option value="Office Supplies">Office Supplies</option>
+    </select>
+     <select id="limitFilter">
+      <option value="10">10 per page</option>
+      <option value="20" selected>20 per page</option>
+      <option value="50">50 per page</option>
+      <option value="100">100 per page</option>
+    </select>
+    <button id="loadBtn">Load / Filter</button>
+  </div>
+
+  <table id="productsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Rows will be injected here -->
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button id="prevBtn" disabled>Previous</button>
+    <button id="nextBtn" disabled>Next</button>
+    <span id="pageInfo"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

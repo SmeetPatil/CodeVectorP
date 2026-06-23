@@ -1,21 +1,16 @@
-// src/seed.js
-//
 // Generates 200,000 products and inserts them in large batches.
 //
 // ── Why not a simple loop with one INSERT per row? ──────────────────
 // A loop doing `await client.query('INSERT ...')` 200,000 times means
 // 200,000 separate round-trips to the database. Each round-trip pays
 // network latency + Postgres parsing/planning overhead, even though
-// the actual write is tiny. On a remote DB (Neon/Supabase) where each
+// the actual write is tiny. On a remote DB where each
 // round-trip might cost 10-50ms, 200,000 round-trips is 30+ minutes,
 // maybe much worse. The fix: batch many rows into ONE multi-row
 // INSERT statement, so we pay the round-trip cost once per batch,
 // not once per row.
 //
-// We insert 5,000 rows per statement, 40 statements total. You could
-// also use Postgres's COPY command (even faster, streams raw data),
-// but batched multi-row INSERTs are simpler to read/explain live and
-// are plenty fast for 200k rows (typically under a minute).
+// We insert 5,000 rows per statement, 40 statements total.
 
 require('dotenv').config();
 const { Pool } = require('pg');
@@ -52,8 +47,6 @@ function randomPrice() {
 }
 
 function randomPastDate() {
-  // spread creation times over the last 365 days, so "newest first"
-  // pagination has something meaningful to sort through
   const now = Date.now();
   const oneYearMs = 365 * 24 * 60 * 60 * 1000;
   const ts = now - Math.random() * oneYearMs;
@@ -64,6 +57,10 @@ async function seed() {
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.PGSSL === 'false' ? false : { rejectUnauthorized: false },
+  });
+
+  pool.on('connect', (client) => {
+    client.query("SET timezone = 'Asia/Kolkata'");
   });
 
   console.log(`Seeding ${TOTAL_PRODUCTS} products in batches of ${BATCH_SIZE}...`);

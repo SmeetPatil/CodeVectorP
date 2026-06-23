@@ -1,15 +1,11 @@
-// src/products.js
-//
-// This file contains the one query that matters for this whole task.
-
 const { Pool } = require('pg');
-
-// Hosted providers like Neon/Supabase require SSL; local Postgres
-// (e.g. during development) typically doesn't support it. We toggle
-// based on an env var so the same code works in both environments.
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.PGSSL === 'false' ? false : { rejectUnauthorized: false },
+});
+
+pool.on('connect', (client) => {
+  client.query("SET timezone = 'Asia/Kolkata'");
 });
 
 /**
