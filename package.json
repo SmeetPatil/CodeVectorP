@@ -1,0 +1,22 @@
+{
+  "name": "codevector-products-api",
+  "version": "1.0.0",
+  "description": "Browse ~200k products with fast, stable cursor-based pagination",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "dotenv": "^16.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "y"
+  },
+  "author": "Smeet Patil",
+  "license": "ISC"
+}
